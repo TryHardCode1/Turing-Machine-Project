@@ -1,0 +1,13 @@
+input: '1011' #Syntax: A binary number to increment
+blank: ' '
+start state: right
+table:
+  # scan to the rightmost digit
+  right:
+    [1,0]: R
+    ' '  : {L: carry}
+  # then carry the 1
+  carry:
+    1      : {write: 0, L}
+    [0,' ']: {write: 1, L: done}
+  done:
