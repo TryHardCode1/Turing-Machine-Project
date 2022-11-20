@@ -1,0 +1,30 @@
+#This program can accept a string of 0's written in the language of 0^(2^n) where n is a natural number and n >= 0
+input: '0000' # try '0', '000', '00000000'
+blank: ' '
+start state: zero
+synonyms:
+  accept: {R: accept}
+  reject: {R: reject}
+table:
+  zero:
+    0  : {write: ' ', R: one}
+    ' ': reject
+  # Base case: accept length of 1 = 2^0.
+  one:
+    0  : {write: x, R: even}
+    ' ': accept
+    x  : R
+  # Inductive case: divide by 2 and check for no remainder.
+  even:
+    0  : {R: odd}
+    ' ': {L: back} # return for another pass
+    x  : R
+  odd: # odd and > 1
+    0  : {write: x, R: even}
+    ' ': reject # odd number of 0s on this pass
+    x  : R
+  back:
+    ' ': {R: one}
+    [0,x]: L
+  accept:
+  reject:
