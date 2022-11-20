@@ -1,0 +1,55 @@
+setup 0 * l setup
+setup 1 * l setup
+setup _ B r read
+
+read 0 _ r read-0
+read 1 _ r read-1
+
+read-0 0 * r read-0
+read-0 1 * r read-0
+read-0 _ * r intermidiate
+
+read-1 0 * r read-1
+read-1 1 * r read-1
+read-1 _ * r intermidiate
+
+intermidiate _ * r intermidiate
+intermidiate 0 _ r write0-intermediate
+intermidiate 1 _ r write1-intermediate
+
+write0-intermediate 0 * r write0-intermediate
+write0-intermediate 1 * r write0-intermediate
+write0-intermediate _ * r write0
+
+write1-intermediate 0 * r write1-intermediate
+write1-intermediate 1 * r write1-intermediate
+write1-intermediate _ * r write1
+
+write0 0 * r write0
+write0 1 * r write0
+write0 _ 0 l roll-back
+
+write1 0 * r write1
+write1 1 * r write1
+write1 _ 1 l roll-back
+
+roll-back 0 * l roll-back
+roll-back 1 * l roll-back
+roll-back _ * l roll-back-1
+
+roll-back-1 0 * l roll-back-1
+roll-back-1 1 * l roll-back-1
+roll-back-1 _ * l roll-back-2
+
+roll-back-2 _ * l roll-back-2
+roll-back-2 0 * l roll-back-3
+roll-back-2 1 * l roll-back-3
+roll-back-2 B _ r roll-back-4
+
+roll-back-3 0 * l roll-back-3
+roll-back-3 1 * l roll-back-3
+roll-back-3 _ * r read
+
+roll-back-4 _ * r roll-back-4
+roll-back-4 0 * * halt
+roll-back-4 1 * * halt
