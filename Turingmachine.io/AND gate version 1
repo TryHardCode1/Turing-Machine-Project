@@ -1,0 +1,55 @@
+input: '1111 1111' #syntax: Binary-number1 Binary-number2
+                   #Note that the length of each binary number must be the same. So to solve this problem, you only need to padding (insert 0)
+                   either the short binary number.
+blank: ' '
+start state: setup
+table:
+  setup:
+    [0,1]: L
+    ' ': {write: B, R: read}
+#Main program
+  read:
+    0: {write: ' ', R: read-0}
+    1: {write: ' ', R: read-1}
+  read-0:
+    [0,1]: {R: read-0}
+    ' ': {R: intermidiate-0}
+  read-1:
+    [0,1]: {R: read-1}
+    ' ': {R: intermidiate-1}
+  intermidiate-0:
+    ' ': R
+    [0,1]: {write: ' ', R: write0-intermediate}
+  intermidiate-1:
+    ' ': R
+    0: {write: ' ', R: write0-intermediate}
+    1: {write: ' ', R: write1-intermediate}
+  write0-intermediate:
+    [0,1]: R
+    ' ': {R: write0}
+  write1-intermediate:
+    [0,1]: R
+    ' ': {R: write1}
+  write0:
+    [0,1]: R
+    ' ': {write: 0, L: roll-back}
+  write1:
+    [0,1]: R
+    ' ': {write: 1, L: roll-back}
+  roll-back:
+    [0,1]: L
+    ' ': {L: roll-back-1}
+  roll-back-1:
+    [0,1]: L
+    ' ': {L: roll-back-2}
+  roll-back-2:
+    ' ': L
+    [0,1]: {L: roll-back-3}
+    B: {write: ' ', R: roll-back-4}
+  roll-back-3:
+    [0,1]: L
+    ' ': {R: read}
+  roll-back-4:
+    ' ': R
+    [0,1]: {L: halt} #Direction right now is no longer important
+  halt:
