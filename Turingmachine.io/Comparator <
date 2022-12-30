@@ -1,0 +1,33 @@
+#This program will accept the input iff the first binary number is strictly less than the second binary number. Note that two binary number must have the same length
+input: '11010#11010'
+blank: ' '
+start state: read
+table:
+  read:
+    0: {write: ' ', R: read0-1}
+    1: {write: ' ', R: read1-1}
+    '#': {write: ' ', R: reject}
+  read0-1:
+    [0,1]: R
+    '#': {R: read0-2}
+  read1-1:
+    [0,1]: R
+    '#': {R: read1-2}
+  read0-2:
+    ' ': R
+    0: {write: ' ', L: back}
+    1: {write: ' ', R: accept}
+  read1-2:
+    ' ': R
+    0: {write: ' ', R: reject}
+    1: {write: ' ', L: back}
+  back:
+    ' ': L
+    '#': {L: back-2}
+  back-2:
+    [0,1]: L
+    ' ': {R: read}
+  accept:
+  reject:
+
+#This program was sponsored by https://introcs.cs.princeton.edu/java/52turing/
